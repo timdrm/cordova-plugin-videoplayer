@@ -238,6 +238,16 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
         dialog.setContentView(main);
         dialog.show();
         dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        dialog.getWindow().getDecorView().setSystemUiVisibility(
+                    VideoView.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | VideoView.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | VideoView.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | VideoView.SYSTEM_UI_FLAG_LOW_PROFILE
+                            | VideoView.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                            | VideoView.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                            | VideoView.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            );
     }
 
     @Override
