@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import org.apache.cordova.CallbackContext;
@@ -28,6 +29,12 @@ import org.apache.cordova.CordovaResourceApi;
 import org.apache.cordova.PluginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import android.graphics.Color;
+
+import android.widget.Button;
 
 public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, OnPreparedListener, OnErrorListener, OnDismissListener {
 
@@ -136,17 +143,69 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
         dialog.setOnDismissListener(this);
 
         // Main container layout
-        LinearLayout main = new LinearLayout(cordova.getActivity());
+        RelativeLayout main = new RelativeLayout(cordova.getActivity());
         main.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        main.setOrientation(LinearLayout.VERTICAL);
+        //main.setOrientation(RelativeLayout.VERTICAL);
         main.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
         main.setVerticalGravity(Gravity.CENTER_VERTICAL);
 
         videoView = new VideoView(cordova.getActivity());
-        videoView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        videoView.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         // videoView.setVideoURI(uri);
         // videoView.setVideoPath(path);
         main.addView(videoView);
+
+
+
+
+        TextView dynamicTextView = new TextView(cordova.getActivity());
+        dynamicTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+        dynamicTextView.setText(" Hello World ");
+        //main.addView(dynamicTextView);
+
+
+        //main.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                //main.setOrientation(LinearLayout.HORIZONTAL);
+
+
+//add textView
+TextView textView = new TextView(cordova.getActivity());
+textView.setText("LETS OVERLAY THE VIDEO");
+textView.setBackgroundColor(Color.parseColor("#00FF0000"));
+textView.setId(1);
+textView.setGravity(Gravity.CENTER);
+///textView.setLayoutParams(params);
+
+// // added Button
+// Button button = new Button(cordova.getActivity());
+// button.setText("AND OVERLAY THE VIDEO SOME MORE");
+// button.setId(2);
+
+//added the textView and the Button to LinearLayout
+main.addView(textView);
+//main.addView(button);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         player = new MediaPlayer();
         player.setOnPreparedListener(this);
