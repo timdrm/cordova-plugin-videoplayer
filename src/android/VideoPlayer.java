@@ -36,6 +36,11 @@ import android.graphics.Color;
 
 import android.widget.Button;
 
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.webkit.WebChromeClient;
+import android.view.View;
+
 public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, OnPreparedListener, OnErrorListener, OnDismissListener {
 
     protected static final String LOG_TAG = "VideoPlayer";
@@ -49,6 +54,8 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
     private VideoView videoView;
 
     private MediaPlayer player;
+
+    private WebView mWebView;
 
     /**
      * Executes the request and returns PluginResult.
@@ -133,7 +140,7 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
         // Let's create the main dialog
         dialog = new Dialog(cordova.getActivity(), android.R.style.Theme_NoTitleBar);
 
-        dialog.getWindow().getAttributes().windowAnimations = android.R.style.Animation_Dialog;
+        dialog.getWindow().getAttributes().windowAnimations = android.R.style.Animation;
 
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -169,22 +176,39 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
                 //main.setOrientation(LinearLayout.HORIZONTAL);
 
 
-//add textView
-TextView textView = new TextView(cordova.getActivity());
-textView.setText("LETS OVERLAY THE VIDEO");
-textView.setBackgroundColor(Color.parseColor("#00FF0000"));
-textView.setId(1);
-textView.setGravity(Gravity.CENTER);
-///textView.setLayoutParams(params);
 
-// // added Button
-// Button button = new Button(cordova.getActivity());
-// button.setText("AND OVERLAY THE VIDEO SOME MORE");
-// button.setId(2);
 
-//added the textView and the Button to LinearLayout
-main.addView(textView);
-//main.addView(button);
+
+                mWebView = new WebView(cordova.getActivity());
+                mWebView.loadUrl("http://timothys-mbp:8021/basic/slide-xmas.html");
+                //mWebView.clearCache(true);
+                //mWebView.clearHistory();
+                mWebView.getSettings().setJavaScriptEnabled(true);
+                mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                mWebView.setBackgroundColor(0);
+                mWebView.getSettings().setJavaScriptEnabled(true);
+
+                mWebView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT));
+                mWebView.setWebChromeClient(new WebChromeClient() {
+                            // public void onProgressChanged(WebView view, int progress)
+                            // {
+                            //     activity.setTitle("Loading...");
+                            //     activity.setProgress(progress * 100);
+                            //
+                            //     if(progress == 100)
+                            //         activity.setTitle(R.string.app_name);
+                            // }
+                        });
+                main.addView(mWebView);
+
+
+
+// TextView textView = new TextView(cordova.getActivity());
+// textView.setText("LETS OVERLAY THE VIDEO");
+// textView.setBackgroundColor(Color.parseColor("#00FF0000"));
+// textView.setId(1);
+// textView.setGravity(Gravity.CENTER);
+// main.addView(textView);
 
 
 
