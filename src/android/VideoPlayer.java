@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import org.apache.cordova.CallbackContext;
@@ -28,6 +29,17 @@ import org.apache.cordova.CordovaResourceApi;
 import org.apache.cordova.PluginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import android.graphics.Color;
+
+import android.widget.Button;
+
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.webkit.WebChromeClient;
+import android.view.View;
 
 public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, OnPreparedListener, OnErrorListener, OnDismissListener {
 
@@ -42,6 +54,8 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
     private VideoView videoView;
 
     private MediaPlayer player;
+
+    private WebView mWebView;
 
     /**
      * Executes the request and returns PluginResult.
@@ -126,7 +140,7 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
         // Let's create the main dialog
         dialog = new Dialog(cordova.getActivity(), android.R.style.Theme_NoTitleBar);
 
-        dialog.getWindow().getAttributes().windowAnimations = android.R.style.Animation_Dialog;
+        dialog.getWindow().getAttributes().windowAnimations = android.R.style.Animation;
 
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -136,17 +150,99 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
         dialog.setOnDismissListener(this);
 
         // Main container layout
-        LinearLayout main = new LinearLayout(cordova.getActivity());
-        main.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        main.setOrientation(LinearLayout.VERTICAL);
+        RelativeLayout main = new RelativeLayout(cordova.getActivity());
+        main.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        //main.setOrientation(RelativeLayout.VERTICAL);
         main.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
         main.setVerticalGravity(Gravity.CENTER_VERTICAL);
 
+
+        RelativeLayout vidwrapper = new RelativeLayout(cordova.getActivity());
+
+        vidwrapper.setLayoutParams(new RelativeLayout.LayoutParams(1200,1200);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+
+vidwrapper.setLayoutParams(params);
+        //main.setOrientation(RelativeLayout.VERTICAL);
+
+
+
         videoView = new VideoView(cordova.getActivity());
-        videoView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        videoView.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         // videoView.setVideoURI(uri);
         // videoView.setVideoPath(path);
-        main.addView(videoView);
+        vidwrapper.addView(videoView);
+        main.addView(vidwrapper);
+
+
+
+
+        TextView dynamicTextView = new TextView(cordova.getActivity());
+        dynamicTextView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+        dynamicTextView.setText(" Hello World ");
+        //main.addView(dynamicTextView);
+
+
+        //main.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                //main.setOrientation(LinearLayout.HORIZONTAL);
+
+
+
+
+
+                mWebView = new WebView(cordova.getActivity());
+                mWebView.loadUrl("http://timothys-mbp:8021/basic/slide-xmas.html");
+                //mWebView.clearCache(true);
+                //mWebView.clearHistory();
+                mWebView.getSettings().setJavaScriptEnabled(true);
+                mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                mWebView.setBackgroundColor(0);
+                mWebView.getSettings().setJavaScriptEnabled(true);
+
+                mWebView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT));
+                mWebView.setWebChromeClient(new WebChromeClient() {
+                            // public void onProgressChanged(WebView view, int progress)
+                            // {
+                            //     activity.setTitle("Loading...");
+                            //     activity.setProgress(progress * 100);
+                            //
+                            //     if(progress == 100)
+                            //         activity.setTitle(R.string.app_name);
+                            // }
+                        });
+                main.addView(mWebView);
+
+
+
+// TextView textView = new TextView(cordova.getActivity());
+// textView.setText("LETS OVERLAY THE VIDEO");
+// textView.setBackgroundColor(Color.parseColor("#00FF0000"));
+// textView.setId(1);
+// textView.setGravity(Gravity.CENTER);
+// main.addView(textView);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         player = new MediaPlayer();
         player.setOnPreparedListener(this);
@@ -201,7 +297,7 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
                         break;
                     default:
                         Log.d(LOG_TAG, "setVideoScalingMode VIDEO_SCALING_MODE_SCALE_TO_FIT");
-                        player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+                        player.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
                 }
             } catch (Exception e) {
                 PluginResult result = new PluginResult(PluginResult.Status.ERROR, e.getLocalizedMessage());
