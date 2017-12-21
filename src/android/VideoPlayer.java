@@ -159,11 +159,12 @@ public class VideoPlayer extends CordovaPlugin implements OnCompletionListener, 
 
         RelativeLayout vidwrapper = new RelativeLayout(cordova.getActivity());
 
-        vidwrapper.setLayoutParams(new RelativeLayout.LayoutParams(1200,1200);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        vidwrapper.setLayoutParams(new RelativeLayout.LayoutParams(1200,1200));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(1200,1200);
         params.addRule(RelativeLayout.CENTER_VERTICAL);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
-vidwrapper.setLayoutParams(params);
+        vidwrapper.setLayoutParams(params);
         //main.setOrientation(RelativeLayout.VERTICAL);
 
 
